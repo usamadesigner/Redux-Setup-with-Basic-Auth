@@ -5,20 +5,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function* Login({payload}) {
   try {
-    if(payload.email!=='' &&payload.passward!=''){
-      let payload={ 
-        email:'hassan.zafar@ropstam.com',
-      password:'12345678',
+      let payload1={ 
+        email:payload.email,
+      password:payload.password,
       device_token:'zasdcvgtghnkiuhgfde345tewasdfghjkm'
       }
-      let res = yield axios.post('http://buddy.ropstambpo.com/api/login', payload);
+      console.log(payload);
+      let res = yield axios.post('http://buddy.ropstambpo.com/api/login', payload1);
       let data = res.data.data;
       console.log('accessToken',data.access_token);
     yield  AsyncStorage.setItem('AccessToken',data.access_token);
-    }
+
     yield put({
       type: auth.SIGN_IN_RECIEVED,
-      payload: payload,
+      payload: payload1,
     });
   } catch (err) {
     yield put({
@@ -30,10 +30,11 @@ function* Login({payload}) {
 function* getdata({}) {
   try {
     let accessToken = yield AsyncStorage.getItem('AccessToken');
-    if (accessToken==null)
+    if (accessToken!=null || undefined )
     {
       yield put({
         type: auth.GET_AUTHRECIEVED,
+        payload:accessToken
       });
     }
     else{
@@ -55,8 +56,7 @@ function* signoutUser() {
 const token=yield AsyncStorage.removeItem('AccessToken');
 console.log('signoit',token);
     yield put({
-      type: auth.SIGNOUT_SUCCESS,
-payload:token
+      type: auth.SIGNOUT_SUCCESS
     });
   } catch (err) {
     yield put({

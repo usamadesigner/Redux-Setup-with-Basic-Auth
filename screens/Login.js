@@ -18,10 +18,11 @@ const Login = ({SignInFunc}) => {
 	const [passward, setPassward] = useState('');
   const Login=()=>{
 const data={
-  email:email,
-password:passward,
+  'email':email,
+'password':passward,
 device_token:'zasdcvgtghnkiuhgfde345tewasdfghjkm'
 }
+console.log(data)
 SignInFunc(data);
    
   }
